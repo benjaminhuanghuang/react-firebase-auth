@@ -2,11 +2,12 @@ import React, { useRef, useState } from "react"
 import { Form, Button, Card, Alert } from "react-bootstrap"
 import { useAuth } from "../contexts/AuthContext"
 import { Link, useHistory } from "react-router-dom"
+import {auth, provider} from '../firebase'
 
 export default function Login() {
   const emailRef = useRef()
   const passwordRef = useRef()
-  const { login } = useAuth()
+  const { login, setCurrentUser } = useAuth()
   const [error, setError] = useState("")
   const [loading, setLoading] = useState(false)
   const history = useHistory()
@@ -26,6 +27,18 @@ export default function Login() {
     setLoading(false)
   }
 
+  // this is other way to use signIn
+  const googleSignIn = () => {
+    auth
+      .signInWithPopup(provider)
+      .then((user) => {
+        setCurrentUser(user);
+        history.push("/");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+  };
   return (
     <>
       <Card>
@@ -52,6 +65,10 @@ export default function Login() {
       </Card>
       <div className="w-100 text-center mt-2">
         Need an account? <Link to="/signup">Sign Up</Link>
+
+        <Button  color="primary" onClick={googleSignIn}>
+          Google Login
+        </Button>
       </div>
     </>
   )
