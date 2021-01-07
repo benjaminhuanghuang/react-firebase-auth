@@ -6,6 +6,8 @@ React + Context + BootStrap + Firebase
 
 
 ## Firebase Auth API
+listener for login and logout
+
 ```
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(user => {
@@ -15,4 +17,39 @@ React + Context + BootStrap + Firebase
 
     return unsubscribe
   }, [])
+```
+
+Uer name / password login
+```
+   return auth.signInWithEmailAndPassword(email, password)
+```
+
+
+Google login
+```
+  auth.signInWithPopup(provider)
+      .then((user) => {
+        setCurrentUser(user);
+        history.push("/");
+      })
+      .catch((error) => {
+        alert(error.message);
+      });
+```
+
+Logout
+```
+  auth.signOut()
+```
+
+
+Reset password
+```
+  auth.sendPasswordResetEmail(email)
+```
+
+Update
+```
+   currentUser.updateEmail(email)
+   currentUser.updatePassword(password)
 ```
